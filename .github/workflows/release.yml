@@ -1,0 +1,77 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Validate source files
+        shell: bash
+        run: |
+          set -euo pipefail
+          node -e 'JSON.parse(require("fs").readFileSync("module.json", "utf8"))'
+          for file in lang/*.json; do
+            node -e 'JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"))' "$file"
+          done
+          for file in scripts/*.mjs; do
+            node --check "$file"
+          done
+
+      - name: Validate release version
+        if: startsWith(github.ref, 'refs/tags/')
+        shell: bash
+        run: |
+          set -euo pipefail
+          manifest_version="$(node -p 'require("./module.json").version')"
+          tag_version="${GITHUB_REF_NAME#v}"
+          test "$manifest_version" = "$tag_version" || {
+            echo "module.json version ($manifest_version) does not match tag ($tag_version)." >&2
+            exit 1
+          }
+
+      - name: Build Foundry package
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist/package
+          cp module.json dist/module.json
+          node -e '
+            const fs = require("fs");
+            const path = "dist/module.json";
+            const manifest = JSON.parse(fs.readFileSync(path, "utf8"));
+            const repository = process.env.GITHUB_REPOSITORY;
+            const tag = process.env.GITHUB_REF_NAME;
+            manifest.url = `https://github.com/${repository}`;
+            manifest.manifest = `https://github.com/${repository}/releases/latest/download/module.json`;
+            manifest.download = `https://github.com/${repository}/releases/download/${tag}/black-flag-improvements.zip`;
+            fs.writeFileSync(path, `${JSON.stringify(manifest, null, 2)}\n`);
+          '
+          cp dist/module.json dist/package/module.json
+          cp -r lang scripts styles templates README.md CHANGELOG.md dist/package/
+          cd dist/package
+          zip -r ../black-flag-improvements.zip .
+
+      - name: Publish GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          body_path: CHANGELOG.md
+          files: |
+            dist/module.json
+            dist/black-flag-improvements.zip

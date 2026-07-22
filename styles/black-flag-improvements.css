@@ -1,0 +1,27 @@
+.tov-macro-activity textarea[name="system.command"] {
+  min-height: 18rem;
+  resize: vertical;
+  font-family: var(--font-monospace, monospace);
+}
+
+.tov-macro-activity [data-tov-macro-drop] {
+  border: 1px dashed var(--color-border-light-tertiary);
+  border-radius: 4px;
+  padding: 0.5rem;
+}
+
+.bfi-weapon-config .window-content { overflow: hidden; }
+.bfi-weapon-config [data-application-part="form"] { overflow-y: auto; min-height: 0; }
+.bfi-weapon-config .bfi-weapon-customization-root { display: flex; flex-direction: column; gap: .75rem; min-height: 0; }
+.bfi-weapon-config .bfi-category,
+.bfi-weapon-config .bfi-definition { border: 1px solid var(--color-border-light-tertiary); border-radius: 4px; }
+.bfi-weapon-config .bfi-category > summary,
+.bfi-weapon-config .bfi-definition > summary { cursor: pointer; font-weight: bold; padding: .55rem .7rem; }
+.bfi-weapon-config .bfi-category-content { display: flex; flex-direction: column; gap: .65rem; padding: 0 .65rem .65rem; }
+.bfi-weapon-config .bfi-definition-content { padding: 0 .65rem .75rem; }
+.bfi-weapon-config .bfi-definition header { display: flex; align-items: center; justify-content: space-between; }
+.bfi-weapon-config .bfi-parameters { display: grid; grid-template-columns: repeat(2, 1fr); gap: .5rem 1rem; }
+.bfi-weapon-config .bfi-parameters label { display: grid; grid-template-columns: 1fr 7rem; align-items: center; gap: .5rem; }
+.bfi-weapon-config .bfi-macro-config { margin-top: .75rem; padding: .5rem; border: 1px solid var(--color-border-light-tertiary); border-radius: 4px; }
+.bfi-weapon-config .bfi-macro-config summary { cursor: pointer; font-weight: bold; }
+.bfi-weapon-config .bfi-macro-config textarea { min-height: 8rem; font-family: var(--font-monospace, monospace); }

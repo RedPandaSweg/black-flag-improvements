@@ -1,0 +1,11 @@
+# Release artifacts
+dist/
+*.zip
+
+# Local tooling and editor files
+node_modules/
+.idea/
+.vscode/
+*.log
+Thumbs.db
+.DS_Store

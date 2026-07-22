@@ -1,0 +1,62 @@
+{
+  "id": "black-flag-improvements",
+  "title": "Black Flag Improvements",
+  "description": "Adds macro activities, weapon customization, weapon enchantments, and Item Piles integration to Black Flag.",
+  "version": "1.4.1",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "authors": [
+    {
+      "name": "Bene"
+    }
+  ],
+  "relationships": {
+    "recommends": [
+      {
+        "id": "item-piles",
+        "type": "module",
+        "compatibility": {
+          "minimum": "3.2.7"
+        }
+      }
+    ],
+    "conflicts": [
+      {
+        "id": "item-piles-black-flag",
+        "type": "module"
+      }
+    ],
+    "systems": [
+      {
+        "id": "black-flag",
+        "type": "system",
+        "compatibility": {
+          "minimum": "2.0.074"
+        }
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/black-flag-improvements.mjs",
+    "scripts/item-piles-integration.mjs",
+    "scripts/weapon-customization.mjs",
+    "scripts/weapon-enchantment.mjs"
+  ],
+  "styles": [
+    "styles/black-flag-improvements.css"
+  ],
+  "languages": [
+    {
+      "lang": "de",
+      "name": "Deutsch",
+      "path": "lang/de.json"
+    },
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ]
+}

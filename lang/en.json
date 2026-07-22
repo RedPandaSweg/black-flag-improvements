@@ -1,0 +1,103 @@
+{
+  "TOV": {
+    "MacroActivity": {
+      "Title": "Macro",
+      "Hint": "Runs a linked Foundry macro or inline JavaScript when activated.",
+      "Section": "Macro",
+      "Mode": { "Label": "Source", "Linked": "Link macro", "Inline": "Enter code directly" },
+      "MacroUuid": { "Label": "Macro UUID", "Hint": "Drop a macro from the Macro Directory here or enter its UUID." },
+      "Command": { "Label": "JavaScript code", "Hint": "actor, token, item, activity, event, message, and results are available. Code runs with the executing user's permissions." },
+      "Error": {
+        "Execution": "Macro activity “{name}” failed: {message}",
+        "NotFound": "The linked macro could not be found.",
+        "EmptyCode": "No macro code was provided."
+      }
+    }
+  },
+  "BFI": {
+    "ItemPiles": {
+      "AdapterConflict": "Black Flag Improvements now includes the Item Piles integration. Disable “Item Piles: Black Flag / Tales of the Valiant” to avoid conflicts.",
+      "Error": "The Black Flag integration for Item Piles failed: {message}"
+    },
+    "Weapon": {
+      "Settings": {
+        "Name": "Custom Weapon Traits",
+        "Label": "Configure weapon traits",
+        "Title": "Custom Properties and Weapon Options",
+        "Hint": "Define custom weapon traits and optional mechanics.",
+        "Explanation": "Properties and Weapon Options subsequently appear on weapons. Depending on the mechanic, attack modes, abilities, reach, or rolls are changed. Unused parameters are ignored. Changes require a restart.",
+        "Duplicate": "Every Property and Weapon Option needs a unique ID."
+      },
+      "Properties": "Properties",
+      "Options": "Weapon Options",
+      "NewEntry": "New entry",
+      "Id": "ID",
+      "Label": "Label",
+      "Description": "Description",
+      "MechanicLabel": "Mechanic",
+      "DieSteps": "Die steps",
+      "ReachBonus": "Reach bonus",
+      "AttackBonus": "Attack bonus",
+      "DamageBonus": "Damage bonus",
+      "Empty": "No custom entries yet.",
+      "Add": "Add entry",
+      "Delete": "Delete entry",
+      "Save": "Save",
+      "Mechanic": {
+        "None": "None",
+        "Versatile": "Versatile",
+        "Finesse": "Finesse",
+        "Light": "Light",
+        "Thrown": "Thrown",
+        "TwoHanded": "Two-Handed",
+        "Reach": "Reach",
+        "Bonuses": "Bonuses"
+      },
+      "Macro": {
+        "Title": "Chat Card Macro",
+        "ButtonLabel": "Button label",
+        "Mode": "Macro source",
+        "Linked": "Link macro",
+        "Inline": "Inline code",
+        "Visibility": "Visibility",
+        "Owner": "Owners only",
+        "All": "All users",
+        "Uuid": "Macro UUID",
+        "Command": "JavaScript code",
+        "Hint": "When a macro is configured for the selected source, an additional button appears next to Attack and Damage. actor, token, item, activity, event, message, definition, targets, and lastAttack are available.",
+        "NotFound": "The configured macro or weapon option was not found.",
+        "NoPermission": "You do not own this weapon.",
+        "Empty": "No macro code was provided.",
+        "Error": "The weapon macro failed: {message}"
+      }
+    },
+    "Enchantment": {
+      "Title": "Weapon Enchantment",
+      "Hint": "Enchants a selected weapon and can change its ability, damage, and magical status.",
+      "Ability": "Attack ability",
+      "AbilityHint": "Spellcasting first uses the spell origin's ability (for example Cleric or Wizard). Without a specific origin, the best available spellcasting ability is used.",
+      "SpellcastingAbility": "Actor's spellcasting ability",
+      "AbilityMode": "Ability usage",
+      "AbilityAlways": "Always use",
+      "AbilityHigher": "Use only when better",
+      "DamageMode": "Damage die",
+      "DamageDie": "Target die",
+      "DamageNone": "Do not change",
+      "DamageMinimum": "Use as minimum die",
+      "DamageReplace": "Replace die",
+      "Magical": "Weapon becomes magical",
+      "AttackBonus": "Additional attack bonus",
+      "DamageBonus": "Additional damage bonus",
+      "Duration": "Duration in seconds",
+      "DurationHint": "0 means unlimited. The effect can always be deleted from the chat card or the weapon's effect manager.",
+      "ChooseTitle": "Enchant Weapon",
+      "Weapon": "Weapon",
+      "Apply": "Enchant",
+      "Remove": "Remove enchantment",
+      "NoWeapons": "The actor has no weapon.",
+      "Applied": "{weapon} was enchanted.",
+      "Removed": "The weapon enchantment was removed.",
+      "NothingToRemove": "No matching weapon enchantment was found."
+    }
+  }
+}

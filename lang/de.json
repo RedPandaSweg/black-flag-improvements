@@ -1,0 +1,103 @@
+{
+  "TOV": {
+    "MacroActivity": {
+      "Title": "Makro",
+      "Hint": "Führt beim Aktivieren ein verlinktes Foundry-Makro oder direkt hinterlegten JavaScript-Code aus.",
+      "Section": "Makro",
+      "Mode": { "Label": "Quelle", "Linked": "Makro verlinken", "Inline": "Code direkt eingeben" },
+      "MacroUuid": { "Label": "Makro-UUID", "Hint": "Ein Makro aus dem Makro-Verzeichnis hier ablegen oder seine UUID eintragen." },
+      "Command": { "Label": "JavaScript-Code", "Hint": "Verfügbar sind actor, token, item, activity, event, message und results. Der Code läuft mit den Rechten des ausführenden Benutzers." },
+      "Error": {
+        "Execution": "Makro-Activity „{name}“ fehlgeschlagen: {message}",
+        "NotFound": "Das verlinkte Makro wurde nicht gefunden.",
+        "EmptyCode": "Es wurde kein Makro-Code hinterlegt."
+      }
+    }
+  },
+  "BFI": {
+    "ItemPiles": {
+      "AdapterConflict": "Black Flag Improvements enthält jetzt die Item-Piles-Integration. Bitte deaktiviere „Item Piles: Black Flag / Tales of the Valiant“, um Konflikte zu vermeiden.",
+      "Error": "Die Black-Flag-Integration für Item Piles ist fehlgeschlagen: {message}"
+    },
+    "Weapon": {
+      "Settings": {
+        "Name": "Eigene Weapon Properties",
+        "Label": "Weapon Properties konfigurieren",
+        "Title": "Eigene Properties und Weapon Options",
+        "Hint": "Eigene Weapon Properties und Weapon Options mit optionalen Mechaniken definieren.",
+        "Explanation": "Weapon Properties und Weapon Options erscheinen anschließend auf Waffen. Je nach Mechanik werden Attack Modes, Abilities, Reach oder Würfe verändert. Nicht benötigte Parameter werden ignoriert. Änderungen erfordern einen Neustart.",
+        "Duplicate": "Jede Property und Weapon Option benötigt eine eindeutige ID."
+      },
+      "Properties": "Properties",
+      "Options": "Weapon Options",
+      "NewEntry": "Neuer Eintrag",
+      "Id": "ID",
+      "Label": "Bezeichnung",
+      "Description": "Beschreibung",
+      "MechanicLabel": "Mechanik",
+      "DieSteps": "Würfelstufen",
+      "ReachBonus": "Reach Bonus",
+      "AttackBonus": "Attack Bonus",
+      "DamageBonus": "Damage Bonus",
+      "Empty": "Noch keine eigenen Einträge.",
+      "Add": "Eintrag hinzufügen",
+      "Delete": "Eintrag löschen",
+      "Save": "Speichern",
+      "Mechanic": {
+        "None": "None",
+        "Versatile": "Versatile",
+        "Finesse": "Finesse",
+        "Light": "Light",
+        "Thrown": "Thrown",
+        "TwoHanded": "Two-Handed",
+        "Reach": "Reach",
+        "Bonuses": "Bonuses"
+      },
+      "Macro": {
+        "Title": "Chat Card Macro",
+        "ButtonLabel": "Button-Name",
+        "Mode": "Macro-Quelle",
+        "Linked": "Macro verlinken",
+        "Inline": "Inline-Code",
+        "Visibility": "Sichtbarkeit",
+        "Owner": "Nur Besitzer",
+        "All": "Alle Benutzer",
+        "Uuid": "Macro-UUID",
+        "Command": "JavaScript-Code",
+        "Hint": "Ist für die gewählte Quelle ein Macro konfiguriert, erscheint ein zusätzlicher Button neben Attack und Damage. Verfügbar sind actor, token, item, activity, event, message, definition, targets und lastAttack.",
+        "NotFound": "Das konfigurierte Macro oder die Weapon Option wurde nicht gefunden.",
+        "NoPermission": "Du besitzt diese Waffe nicht.",
+        "Empty": "Es wurde kein Macro-Code hinterlegt.",
+        "Error": "Das Weapon Macro ist fehlgeschlagen: {message}"
+      }
+    },
+    "Enchantment": {
+      "Title": "Weapon Enchantment",
+      "Hint": "Verzaubert beim Aktivieren eine gewählte Waffe und kann deren Ability, Schaden und Magical Property verändern.",
+      "Ability": "Attack Ability",
+      "AbilityHint": "Spellcasting verwendet zuerst die Ability des Spell-Ursprungs (z. B. Cleric oder Wizard). Ohne eindeutigen Ursprung wird die beste verfügbare Spellcasting Ability verwendet.",
+      "SpellcastingAbility": "Spellcasting",
+      "AbilityMode": "Ability-Auswahl",
+      "AbilityAlways": "Immer verwenden",
+      "AbilityHigher": "Nur verwenden, wenn besser",
+      "DamageMode": "Schadenswürfel",
+      "DamageDie": "Zielwürfel",
+      "DamageNone": "Nicht verändern",
+      "DamageMinimum": "Als Mindestwürfel verwenden",
+      "DamageReplace": "Würfel ersetzen",
+      "Magical": "Magical Property hinzufügen",
+      "AttackBonus": "Zusätzlicher Attack Bonus",
+      "DamageBonus": "Zusätzlicher Damage Bonus",
+      "Duration": "Dauer in Sekunden",
+      "DurationHint": "0 bedeutet unbegrenzt. Der Effekt kann jederzeit über die Chatkarte oder die Active Effects der Waffe gelöscht werden.",
+      "ChooseTitle": "Weapon Enchantment",
+      "Weapon": "Waffe",
+      "Apply": "Verzaubern",
+      "Remove": "Enchantment entfernen",
+      "NoWeapons": "Der Akteur besitzt keine Waffe.",
+      "Applied": "{weapon} wurde verzaubert.",
+      "Removed": "Das Weapon Enchantment wurde entfernt.",
+      "NothingToRemove": "Es wurde kein passendes Weapon Enchantment gefunden."
+    }
+  }
+}
