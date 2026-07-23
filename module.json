@@ -9,9 +9,12 @@
   },
   "authors": [
     {
-      "name": "Bene"
+      "name": "RedPandaSweg"
     }
   ],
+    "url": "https://github.com/RedPandaSweg/black-flag-improvements",
+  "manifest": "https://raw.githubusercontent.com/RedPandaSweg/black-flag-improvements/main/module.json",
+  "download": "https://raw.githubusercontent.com/RedPandaSweg/black-flag-improvements/main/module.zip",
   "relationships": {
     "recommends": [
       {
