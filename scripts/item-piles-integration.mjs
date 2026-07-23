@@ -1,5 +1,8 @@
 const MODULE_ID = "black-flag-improvements";
-const VERSION = game.modules.get(MODULE_ID)?.version ?? "0.0.0";
+
+function getModuleVersion() {
+  return game.modules?.get(MODULE_ID)?.version ?? "0.0.0";
+}
 
 const ITEM_FILTERS = [{
   path: "type",
@@ -9,6 +12,7 @@ const ITEM_SIMILARITIES = ["name", "type"];
 const UNSTACKABLE_ITEM_TYPES = ["container", "armor", "weapon"];
 
 let registrationPromise;
+let waitingForCurrencies = false;
 let chatCompatibilityInstalled = false;
 
 function buildCurrencies() {
@@ -35,23 +39,38 @@ function buildCurrencies() {
       abbreviation: `{#}${denomination.toUpperCase()}`,
       data: { uuid: config.uuid, ...(config.item ? { item: config.item.toObject() } : {}) },
       primary: denomination === "gp",
-      // Black Flag stores "units per gp"; Item Piles stores "gp value per unit".
-      exchangeRate: 1 / Number(config.conversion)
+      // Registered Black Flag currency items store their value in GP:
+      // SP = 0.1 and CP = 0.01, which is also what Item Piles expects.
+      exchangeRate: Number(config.conversion)
     }));
 }
 
-function getItemCost(item) {
-  const value = Number(foundry.utils.getProperty(item, "system.price.value"));
+function getItemCost(item, currencies = []) {
+  // Item Piles normally passes the Item itself, but some merchant paths pass
+  // the surrounding price entry instead.
+  const itemData = item?.item ?? item;
+  const value = Number(foundry.utils.getProperty(itemData, "system.price.value"));
   if (!Number.isFinite(value) || value <= 0) return 0;
 
-  const denomination = foundry.utils.getProperty(item, "system.price.denomination") || "gp";
+  const denomination = foundry.utils.getProperty(itemData, "system.price.denomination") || "gp";
+  const currency = currencies.find(entry => {
+    const abbreviation = entry?.abbreviation?.replace("{#}", "").trim().toLowerCase();
+    return abbreviation === denomination.toLowerCase();
+  });
+  const exchangeRate = Number(currency?.exchangeRate);
+  if (Number.isFinite(exchangeRate) && exchangeRate > 0) {
+    return value * exchangeRate;
+  }
+
+  // Currency overrides are optional. Registered Black Flag currencies use the
+  // same GP-value-per-unit convention as Item Piles.
   const conversion = Number(CONFIG.BlackFlag?.currencies?.[denomination]?.conversion);
   if (!Number.isFinite(conversion) || conversion <= 0) {
-    console.warn(`${MODULE_ID} | Unknown price denomination "${denomination}"; treating it as gp.`, item);
+    console.warn(`${MODULE_ID} | Unknown price denomination "${denomination}"; treating it as gp.`, itemData);
     return value;
   }
 
-  return value / conversion;
+  return value * conversion;
 }
 
 function installChatCompatibility() {
@@ -67,7 +86,7 @@ function installChatCompatibility() {
 function getIntegrationData(currencies) {
   const methods = game.itempiles.CONSTANTS.ITEM_TYPE_METHODS;
   return {
-    VERSION,
+    VERSION: getModuleVersion(),
     ACTOR_CLASS_TYPE: "pc",
     ITEM_CLASS_LOOT_TYPE: "sundry",
     ITEM_CLASS_WEAPON_TYPE: "weapon",
@@ -148,40 +167,45 @@ async function persistSettings(currencies) {
   }
 }
 
-async function synchronizeCurrencies() {
-  if (!game.itempiles || !game.user?.isGM) return [];
-  const currencies = buildCurrencies();
-  if (!currencies.length) {
-    console.warn(`${MODULE_ID} | Black Flag currency registration is not ready yet.`);
-    return [];
+async function persistSettingsSafely() {
+  try {
+    await persistSettings(buildCurrencies());
+  } catch (error) {
+    console.error(`${MODULE_ID} | Failed to persist Item Piles settings.`, error);
+    ui.notifications.error(game.i18n.format("BFI.ItemPiles.Error", { message: error.message }));
   }
-  await game.itempiles.API.setCurrencies(currencies);
-  console.log(`${MODULE_ID} | Item Piles currencies updated (${currencies.length}).`);
-  return currencies;
 }
 
 async function registerIntegration() {
+  if (game.system.id !== "black-flag" || !game.itempiles?.API) return;
   if (registrationPromise) return registrationPromise;
-  registrationPromise = (async () => {
-    if (game.system.id !== "black-flag" || !game.itempiles) return;
 
+  const currencies = buildCurrencies();
+  if (!currencies.length) {
+    if (!waitingForCurrencies) {
+      waitingForCurrencies = true;
+      Hooks.once("blackFlag.registrationComplete", () => {
+        waitingForCurrencies = false;
+        registerIntegration();
+      });
+      console.log(`${MODULE_ID} | Waiting for Black Flag currency registration before registering Item Piles support.`);
+    }
+    return;
+  }
+
+  registrationPromise = (async () => {
     if (game.modules.get("item-piles-black-flag")?.active) {
       ui.notifications.warn(game.i18n.localize("BFI.ItemPiles.AdapterConflict"), { permanent: true });
       console.warn(`${MODULE_ID} | Disable item-piles-black-flag; this module now provides that integration.`);
     }
 
-    let currencies = buildCurrencies();
     game.itempiles.API.addSystemIntegration(getIntegrationData(currencies));
 
-    if (game.user) await persistSettings(currencies);
-
-    if (!currencies.length) {
-      Hooks.once("blackFlag.registrationComplete", synchronizeCurrencies);
-    }
-
-    // This also covers the case where registrationComplete fired before Item Piles became ready.
-    if (game.ready) await synchronizeCurrencies();
-    else Hooks.once("ready", synchronizeCurrencies);
+    // Register support before ready, but Foundry forbids writing world settings
+    // until the game is ready. Rebuild currencies then as Black Flag's
+    // registration will also have completed by that point.
+    if (game.ready) await persistSettingsSafely();
+    else Hooks.once("ready", persistSettingsSafely);
 
     console.log(`${MODULE_ID} | Item Piles integration registered with denomination-aware prices.`);
   })().catch(error => {
@@ -196,5 +220,12 @@ Hooks.once("init", () => {
   if (game.system.id !== "black-flag") return;
   installChatCompatibility();
   Hooks.once("item-piles-ready", registerIntegration);
-  if (game.itempiles) registerIntegration();
+  // When Item Piles happened to initialize first, register immediately.
+  // Otherwise setup and item-piles-ready provide safe optional fallbacks.
+  if (game.itempiles?.API) registerIntegration();
 });
+
+// Item Piles exposes its API during init. Registering in setup makes Black Flag
+// a supported system before Item Piles fires item-piles-ready and checks its
+// system data during ready.
+Hooks.once("setup", registerIntegration);

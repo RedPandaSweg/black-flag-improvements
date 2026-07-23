@@ -2,7 +2,7 @@
   "id": "black-flag-improvements",
   "title": "Black Flag Improvements",
   "description": "Adds macro activities, weapon customization, weapon enchantments, and Item Piles integration to Black Flag.",
-  "version": "1.4.1",
+  "version": "1.4.7",
   "compatibility": {
     "minimum": "13",
     "verified": "13"
