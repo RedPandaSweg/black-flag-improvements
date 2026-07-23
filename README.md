@@ -1,6 +1,6 @@
 # Black Flag Improvements
 
-A Foundry VTT module for the Black Flag system. It adds **Macro** to the available activity types.
+A Foundry VTT module for the Black Flag system. It adds **Macro** and **Weapon Enchantment** to the available activity types.
 
 A macro activity can either execute an existing world or compendium macro by UUID or store JavaScript directly in the activity. When activated, the normal Black Flag workflow (dialog, resource consumption, and chat card) is completed before the macro runs.
 
